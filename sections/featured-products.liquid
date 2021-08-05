@@ -1,0 +1,54 @@
+{{ 'collection.scss.css' | asset_url | stylesheet_tag }}
+{{ 'product-tile.scss.css' | asset_url | stylesheet_tag }}
+
+<div class="page-width">
+  {% if section.settings.Heading != blank %}
+    <div class="section-header text-center">
+      <h2>{{ section.settings.heading | escape }}</h2>
+    </div>
+  {% endif %}
+
+  {%- assign collection = collections[section.settings.featured_collection] -%}
+
+
+  <div class="collection">
+    {% for product in collection.products limit: 4 %}
+      <div class="product-tile">
+        <a href="{{ product.url }}" class="product-tile__img-link">
+          <img src="{{ product.featured_media.preview_image | img_url: '400x400', crop: 'center' }}" alt="{{ product.featured_media.preview_image.alt }}" class="product-tile__img">
+        </a>
+
+        <h2 class="product-tile__title h4">
+          <a class="product-tile__title-link" href="{{ product.url }}" aria-hidden="true">{{ product.title }}</a>
+        </h2>
+
+        {% include 'product-price-listing', product: product %}
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Featured Products",
+    "settings": [
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading",
+        "default": "Blue Acorn's great products"
+      },
+      {
+        "type": "collection",
+        "id": "featured_collection",
+        "label": "Collection"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Featured Products",
+        "category": "Sections"
+      }
+    ]
+  }
+{% endschema %}
