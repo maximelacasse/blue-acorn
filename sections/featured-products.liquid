@@ -1,5 +1,6 @@
 {{ 'collection.scss.css' | asset_url | stylesheet_tag }}
 {{ 'product-tile.scss.css' | asset_url | stylesheet_tag }}
+{{ 'button.scss.css' | asset_url | stylesheet_tag }}
 
 <div class="page-width">
   {% if section.settings.Heading != blank %}
@@ -23,6 +24,10 @@
         </h2>
 
         {% include 'product-price-listing', product: product %}
+
+        <button class="button">
+          {{ 'products.product.add_to_cart' | t }}
+        </button>
       </div>
     {% endfor %}
   </div>
