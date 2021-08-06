@@ -1,0 +1,31 @@
+$color-accent: #886cfe;
+$color-accent-corner: #6c56cb;
+$color-white: #ffffff;
+$color-black: #000000;
+$transition: 0.2s ease;
+
+.button {
+  background-color: $color-accent;
+  border: 2px solid $color-accent;
+  color: $color-white;
+  padding: 10px 30px;
+  position: relative;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: background-color $transition, color $transition;
+
+  &:hover {
+    background-color: $color-white;
+    color: $color-black;
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    border-width: 10px 10px 0 0;
+    border-style: solid;
+    border-color: $color-accent-corner $color-white;
+  }
+}
