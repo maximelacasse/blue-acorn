@@ -25,9 +25,19 @@
 
         {% include 'product-price-listing', product: product %}
 
-        <button class="button">
-          {{ 'products.product.add_to_cart' | t }}
-        </button>
+        <form id="product-form-{{ product.product_id }}" class="js-cart-submit" action="/cart/add" method="post">
+          <input type="hidden" name="id" value="{{ product.first_available_variant.id }}">
+          {%- comment -%}
+            Quantity could be set here but PDF specifies to set in JS.
+            Could also not be set at all as shopify will default to 1 if quantity is not provided
+            <input type="hidden" name="quantity" value="1">
+          {%- endcomment -%}
+          <input type="hidden" name="handle" value="{{ product.handle }}">
+
+          <button class="button" type="submit">
+            {{ 'products.product.add_to_cart' | t }}
+          </button>
+        </form>
       </div>
     {% endfor %}
   </div>
@@ -57,3 +67,23 @@
     ]
   }
 {% endschema %}
+
+<script>
+  const productForms = document.querySelectorAll('.js-cart-submit');
+
+  productForms.forEach(form => {
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const data = new FormData(e.target);
+      data.append('quantity', 1)
+
+      axios.post('/cart/add.js', data)
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    })
+  })
+</script>
